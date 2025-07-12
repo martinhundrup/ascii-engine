@@ -8,16 +8,16 @@
 
 #include "../include/input.h"
 
+
 // Function to initialize input handling
-HANDLE* configureConsoleInput() {
-    
-	HANDLE* inputHandler = (HANDLE*)malloc(sizeof(HANDLE));
+Input_Handler* configureConsoleInput() {
+    Input_Handler* handler = (Input_Handler*)malloc(sizeof(Input_Handler));
+    if (!handler) return NULL;
 
-    inputHandler = GetStdHandle(STD_INPUT_HANDLE);
+    handler->input = GetStdHandle(STD_INPUT_HANDLE);
+
     DWORD mode;
-
-    // Get current input mode
-    GetConsoleMode(inputHandler, &mode);
+    GetConsoleMode(handler->input, &mode);
 
     // Disable line input and echo input
     mode &= ~(ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT);
@@ -25,27 +25,52 @@ HANDLE* configureConsoleInput() {
     // Enable window and mouse input so we can use ReadConsoleInput
     mode |= ENABLE_WINDOW_INPUT | ENABLE_EXTENDED_FLAGS;
 
-    SetConsoleMode(inputHandler, mode);
-	return inputHandler;
+    SetConsoleMode(handler->input, mode);
+
+    // Zero initialize key state arrays
+    for (int i = 0; i < MAX_KEYS; i++) {
+        handler->previousKeyStates[i] = 0;
+        handler->currentKeyStates[i] = 0;
+    }
+
+    handler->tick = updateInputStates;
+    return handler;
 }
 
-WORD getInputKeyCode(HANDLE* inputHandler) {
+void updateInputStates(Input_Handler* handler) {
+    for (int i = 0; i < MAX_KEYS; i++) {
+        handler->previousKeyStates[i] = handler->currentKeyStates[i];
+        handler->currentKeyStates[i] = (GetAsyncKeyState(i) & 0x8000) != 0;
+    }
+}
+
+int isKeyPressed(Input_Handler* handler, WORD keyCode) {
+    if (keyCode >= MAX_KEYS) return 0;
+    return handler->currentKeyStates[keyCode] && !handler->previousKeyStates[keyCode];
+}
+
+int isKeyReleased(Input_Handler* handler, WORD keyCode) {
+    if (keyCode >= MAX_KEYS) return 0;
+    return !handler->currentKeyStates[keyCode] && handler->previousKeyStates[keyCode];
+}
+
+int isKeyDown(Input_Handler* handler, WORD keyCode) {
+    if (keyCode >= MAX_KEYS) return 0;
+    return handler->currentKeyStates[keyCode];
+}
+
+// Optionally peek at the current console buffer input
+WORD getInputKeyCode(Input_Handler* handler) {
     DWORD eventsRead = 0;
     INPUT_RECORD ir;
-	WORD vk = 0;
-    // Peek instead of Read
-    if (PeekConsoleInput(inputHandler, &ir, 1, &eventsRead) && eventsRead > 0) {
+    WORD vk = 0;
+
+    if (PeekConsoleInput(handler->input, &ir, 1, &eventsRead) && eventsRead > 0) {
         if (ir.EventType == KEY_EVENT && ir.Event.KeyEvent.bKeyDown) {
-           vk = ir.Event.KeyEvent.wVirtualKeyCode;
+            vk = ir.Event.KeyEvent.wVirtualKeyCode;
         }
-        // Remove the event from the buffer
-        ReadConsoleInput(inputHandler, &ir, 1, &eventsRead);
+        ReadConsoleInput(handler->input, &ir, 1, &eventsRead);
     }
 
     return vk;
-}
-
-int isKeyDown(HANDLE* inputHandler, WORD keyCode) {
-    // Check if the key is currently pressed down
-    return (GetAsyncKeyState(keyCode) & 0x8000) != 0;
 }

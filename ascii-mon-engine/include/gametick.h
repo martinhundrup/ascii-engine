@@ -11,24 +11,24 @@
 
 #include "ascii-engine.h"
 
-struct game_ticker {
+typedef struct game_ticker {
   LARGE_INTEGER freq, start, now, last;
   void (*init)(struct game_ticker* self);
   void (*tick)(struct game_ticker* self); // Called at the end of each frame
   double (*get_total_elapsed)(struct game_ticker* self); // Seconds since start
   double (*get_delta)(struct game_ticker* self); // Seconds since last frame
-};
+} Game_Ticker;
 
-void init_game_ticker(struct game_ticker* self);
+void init_game_ticker(Game_Ticker* self);
 
-void tick_game_ticker(struct game_ticker* self);
+void tick_game_ticker(Game_Ticker* self);
 
 // number of seconds since init()
-double get_total_elapsed(struct game_ticker* self);
+double get_total_elapsed(Game_Ticker* self);
 
 // number of seconds since last frame
-double get_delta(struct game_ticker* self);
+double get_delta(Game_Ticker* self);
 
-struct game_ticker* new_game_ticker();
+Game_Ticker* new_game_ticker();
 
 #endif
