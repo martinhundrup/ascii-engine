@@ -43,7 +43,7 @@ HANDLE* configureDrawSystem();
 int drawGlyph(HANDLE* handle, Vector2_Int* vect, Glyph* glyph);
 int drawChar(HANDLE* handle, Vector2_Int* vect, char ch, int fgColor, int bgColor);
 int clearScreen(HANDLE* handle);
-int fillRect(HANDLE* handle, Vector2_Int* vect, int width, int height, Glyph* glyph);
+int fillRect(HANDLE* handle, Vector2_Int* origin, Vector2_Int* size, Glyph* glyph);
 
 int setCursorVisible(HANDLE* handle, int visible);
 int moveCursor(HANDLE* handle, Vector2_Int* vect);

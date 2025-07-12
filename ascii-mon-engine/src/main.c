@@ -58,5 +58,9 @@ int main() {
 
 	printf("total elapsed time: %lf\n", gt->get_total_elapsed(gt));
 
+	// Vector2_Int size = {10, 5};
+	// g.symbol = ' ';
+	// fillRect(output, &v, &size, &g);
+
 	return 0;
 }

@@ -54,13 +54,13 @@ int clearScreen(HANDLE* handle) {
 }
 
 
-int fillRect(HANDLE* handle, Vector2_Int* vect, int width, int height, Glyph* glyph) {
-	if (!handle || !vect || !glyph) return -1;
-	if (vect->x < 0 || vect->y < 0 || width < 0 || height < 0) return -2;
+int fillRect(HANDLE* handle, Vector2_Int* origin, Vector2_Int* size, Glyph* glyph) {
+	if (!handle || !origin || !size || !glyph) return -1;
+	if (origin->x < 0 || origin->y < 0 || size->x < 0 || size->y < 0) return -2;
 	int err = 0;
-	for (int row = 0; row < height; row++) {
-		for (int col = 0; col < width; col++) {
-			Vector2_Int v = {vect->x + col, vect->y + row};
+	for (int row = 0; row < size->y; row++) {
+		for (int col = 0; col < size->x; col++) {
+			Vector2_Int v = {origin->x + col, origin->y + row};
 			int res = drawGlyph(handle, &v, glyph);
 			if (res != 0) err = res;
 		}
