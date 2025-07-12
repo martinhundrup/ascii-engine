@@ -20,20 +20,25 @@ int main() {
 	LARGE_INTEGER freq, start, now;
 	QueryPerformanceFrequency(&freq);
 	QueryPerformanceCounter(&start);
+	
 	struct InputHandler* input = configureConsoleInput();
 	double elapsed = 0.0;
 
 	do {
 
 		WORD key = getInputKeyCode(input);
-		if (input->keys[key].isDown) {
+		if (key != 0) {
 			printf("keycode downd: %d\n", key);
+		}
+
+		if (isKeyDown(input, VK_ESCAPE)) {
+			printf("Escape key pressed, exiting...\n");
+			break;
 		}
 		
 		x++;
 		QueryPerformanceCounter(&now);
 		elapsed = (double)(now.QuadPart - start.QuadPart) * 1000.0 / (double)freq.QuadPart;
-		input->tick(input);
 	} while (elapsed < 1000.0 * RUNTIME); // Loop for 1 second
 
 	printf("tick count: %d\n", x);
