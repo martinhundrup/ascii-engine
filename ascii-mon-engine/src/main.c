@@ -21,7 +21,7 @@ int main() {
 	QueryPerformanceFrequency(&freq);
 	QueryPerformanceCounter(&start);
 	
-	struct InputHandler* input = configureConsoleInput();
+	HANDLE* input = configureConsoleInput();
 	double elapsed = 0.0;
 
 	do {

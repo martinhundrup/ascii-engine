@@ -33,7 +33,6 @@ WORD getInputKeyCode(HANDLE* inputHandler) {
     DWORD eventsRead = 0;
     INPUT_RECORD ir;
 	WORD vk = 0;
-    struct InputKey* key = NULL;
     // Peek instead of Read
     if (PeekConsoleInput(inputHandler, &ir, 1, &eventsRead) && eventsRead > 0) {
         if (ir.EventType == KEY_EVENT && ir.Event.KeyEvent.bKeyDown) {
@@ -46,7 +45,7 @@ WORD getInputKeyCode(HANDLE* inputHandler) {
     return vk;
 }
 
-int isKeyDown(struct InputHandler* inputHandler, WORD keyCode) {
+int isKeyDown(HANDLE* inputHandler, WORD keyCode) {
     // Check if the key is currently pressed down
     return (GetAsyncKeyState(keyCode) & 0x8000) != 0;
 }
