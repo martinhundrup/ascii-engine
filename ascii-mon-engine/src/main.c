@@ -8,41 +8,59 @@
 *	for use of the engine.
 */
 
-#define TICK_MS 5
-#define RUNTIME 10
-
 #include "../include/ascii-engine.h"
 #include "../include/input.h"
 #include "../include/gametick.h"
+#include "../include/draw.h"
 
 int main() {
-	int x = 0;
 	
-	struct game_ticker* gt = new_game_ticker();
+	Game_Ticker* gt = new_game_ticker();
 	gt->init(gt);
 	
-	HANDLE* input = configureConsoleInput();
+	Input_Handler* ih = configureConsoleInput();
+	HANDLE* output = configureDrawSystem();
+
+	Glyph g = {'t', COLOR_WHITE, COLOR_GREEN};
+	Vector2_Int v = {0};
 
 	do {
+		ih->tick(ih);
 
-		WORD key = getInputKeyCode(input);
-		if (key != 0) {
-			printf("keycode down: %d\n", key);
-		}
-
-		if (isKeyDown(input, VK_ESCAPE)) {
+		if (isKeyPressed(ih, VK_ESCAPE)) {
 			printf("Escape key pressed, exiting...\n");
 			break;
 		}
 
-		printf("time since last tick: %lf\n", gt->get_delta(gt));
-		
-		x++;
-		gt->tick(gt);
-	} while (gt->get_total_elapsed(gt) < RUNTIME); // Loop for 1 second
+		if (isKeyPressed(ih, 'D')){
+			eraseAtPosition(output, &v);
+			v.x++;
+			drawGlyph(output, &v, &g);
+		}
+		if (isKeyPressed(ih, 'A')){
+			eraseAtPosition(output, &v);
+			v.x--;
+			drawGlyph(output, &v, &g);
+		}		
+		if (isKeyPressed(ih, 'W')){
+			eraseAtPosition(output, &v);
+			v.y--;
+			drawGlyph(output, &v, &g);
+		}		
+		if (isKeyPressed(ih, 'S')){
+			eraseAtPosition(output, &v);
+			v.y++;
+			drawGlyph(output, &v, &g);
+		}		
 
-	printf("tick count: %d\n", x);
+		gt->tick(gt);
+	} while (1); // Loop for 1 second
+
 	printf("total elapsed time: %lf\n", gt->get_total_elapsed(gt));
+
+	// Vector2_Int size = {10, 5};
+	// g.symbol = ' ';
+	// fillRect(output, &v, &size, &g);
 
 	return 0;
 }

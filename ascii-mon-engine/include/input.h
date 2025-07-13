@@ -11,12 +11,24 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#define MAX_KEYS 256
+
 #include "ascii-engine.h"
 
-HANDLE* configureConsoleInput();
+typedef struct input_handler {
+    HANDLE* input;
+    BYTE previousKeyStates[MAX_KEYS];
+    BYTE currentKeyStates[MAX_KEYS];
+    void (*tick)(struct input_handler* self);
+} Input_Handler;
 
-WORD getInputKeyCode(HANDLE* inputHandler);
+Input_Handler* configureConsoleInput();
 
-int isKeyDown(HANDLE* inputHandler, WORD keyCode);
+void updateInputStates(Input_Handler* handler);
+int isKeyPressed(Input_Handler* handler, WORD keyCode);
+int isKeyReleased(Input_Handler* handler, WORD keyCode);
+int isKeyDown(Input_Handler* handler, WORD keyCode);
+
+WORD getInputKeyCode(Input_Handler* handler);
 
 #endif

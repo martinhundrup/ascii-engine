@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "gametick.h": "c",
+    "input.h": "c"
+  }
+}
