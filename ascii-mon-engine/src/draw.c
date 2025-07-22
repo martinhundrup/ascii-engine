@@ -8,14 +8,11 @@
 
 #include "../include/draw.h"
 
-// Initialization and teardown
 HANDLE* configureDrawSystem() {
   HANDLE* output = (HANDLE*)malloc(sizeof(HANDLE));
 	*output = GetStdHandle(STD_OUTPUT_HANDLE);
   return output;
 }
-
-// Drawing functions
 
 int drawGlyph(HANDLE* handle, Vector2_Int* vect, Glyph* glyph) {
 	if (!handle || !vect || !glyph) return -1;
@@ -33,12 +30,10 @@ int drawGlyph(HANDLE* handle, Vector2_Int* vect, Glyph* glyph) {
 	return 0;
 }
 
-
 int drawChar(HANDLE* handle, Vector2_Int* vect, char ch, int fgColor, int bgColor) {
 	Glyph glyph = { ch, fgColor, bgColor };
 	return drawGlyph(handle, vect, &glyph);
 }
-
 
 int clearScreen(HANDLE* handle) {
 	if (!handle) return -1;
@@ -52,7 +47,6 @@ int clearScreen(HANDLE* handle) {
 	if (!SetConsoleCursorPosition(*handle, topLeft)) return -5;
 	return 0;
 }
-
 
 int fillRect(HANDLE* handle, Vector2_Int* origin, Vector2_Int* size, Glyph* glyph) {
 	if (!handle || !origin || !size || !glyph) return -1;
@@ -68,7 +62,6 @@ int fillRect(HANDLE* handle, Vector2_Int* origin, Vector2_Int* size, Glyph* glyp
 	return err;
 }
 
-// Cursor control
 int setCursorVisible(HANDLE* handle, int visible) {
 	if (!handle) return -1;
 	CONSOLE_CURSOR_INFO cursorInfo;

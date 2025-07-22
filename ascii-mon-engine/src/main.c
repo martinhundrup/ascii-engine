@@ -20,39 +20,47 @@ int main() {
 	
 	Input_Handler* ih = configureConsoleInput();
 	HANDLE* output = configureDrawSystem();
+	setCursorVisible(output, 0); // hide cursor
 
-	Glyph g = {'t', COLOR_WHITE, COLOR_GREEN};
+	// Glyph background = {' ', COLOR_WHITE, COLOR_WHITE};
+	// Vector2_Int backgroundSize = {80, 25};
+
+	Glyph player = {' ', COLOR_WHITE, COLOR_GREEN};
 	Vector2_Int v = {0};
 
 	do {
-		ih->tick(ih);
 
-		if (isKeyPressed(ih, VK_ESCAPE)) {
-			printf("Escape key pressed, exiting...\n");
-			break;
+		if (gt->act) {
+
+			//fillRect(output, &(Vector2_Int){0, 0}, &backgroundSize, &background);
+
+			ih->tick(ih);
+
+			if (isKeyPressed(ih, VK_ESCAPE)) {
+				printf("Escape key pressed, exiting...\n");
+				break;
+			}
+
+			if (isKeyDown(ih, 'D')){
+				eraseAtPosition(output, &v);
+				v.x++;
+			}
+			if (isKeyDown(ih, 'A')){
+				eraseAtPosition(output, &v);
+				v.x--;
+			}		
+			if (isKeyDown(ih, 'W')){
+				eraseAtPosition(output, &v);
+				v.y--;
+			}		
+			if (isKeyDown(ih, 'S')){
+				eraseAtPosition(output, &v);
+				v.y++;
+			}		
+
+
+			drawGlyph(output, &v, &player);
 		}
-
-		if (isKeyPressed(ih, 'D')){
-			eraseAtPosition(output, &v);
-			v.x++;
-			drawGlyph(output, &v, &g);
-		}
-		if (isKeyPressed(ih, 'A')){
-			eraseAtPosition(output, &v);
-			v.x--;
-			drawGlyph(output, &v, &g);
-		}		
-		if (isKeyPressed(ih, 'W')){
-			eraseAtPosition(output, &v);
-			v.y--;
-			drawGlyph(output, &v, &g);
-		}		
-		if (isKeyPressed(ih, 'S')){
-			eraseAtPosition(output, &v);
-			v.y++;
-			drawGlyph(output, &v, &g);
-		}		
-
 		gt->tick(gt);
 	} while (1); // Loop for 1 second
 

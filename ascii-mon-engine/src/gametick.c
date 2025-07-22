@@ -14,6 +14,8 @@ Game_Ticker* new_game_ticker() {
   gt->tick = tick_game_ticker;
   gt->get_total_elapsed = get_total_elapsed;
   gt->get_delta = get_delta;
+  gt->act = 0;
+  gt->lastTick = 0;
   return gt;
 }
 
@@ -27,6 +29,13 @@ void init_game_ticker(Game_Ticker* self) {
 void tick_game_ticker(Game_Ticker* self) {
   self->last = self->now;
   QueryPerformanceCounter(&self->now);
+
+  self->act = 0;
+  double elapsed = get_total_elapsed(self);
+  if (elapsed - self->lastTick >= 1.0 / TICK_FREQUENCY) {
+    self->act = 1; // Set act to true if enough time has passed
+    self->lastTick = elapsed;
+  }
 }
 
 double get_total_elapsed(Game_Ticker* self) {
