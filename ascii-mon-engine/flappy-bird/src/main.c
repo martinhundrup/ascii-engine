@@ -1,19 +1,17 @@
 /*
-*	copyright martin hundrup
+*	copyright Martin Hundrup
 */
 
 /*
-*	main.c is the entry point for engine testing.
-*	this file should not contain and code critical
-*	for use of the engine.
+*	main.c contains the entry point for playing the game.
 */
 
-#include "../include/ascii-engine.h"
-#include "../include/input.h"
-#include "../include/gametick.h"
-#include "../include/draw.h"
+#include "../include/flappy.h"
 
 int main() {
+
+  printf("Welcome to Flappy Bird!\n");
+  return 0;
 
 	int tick_frequency = 20; // 20 ticks per second
 

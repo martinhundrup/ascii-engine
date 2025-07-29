@@ -33,6 +33,47 @@
       "problemMatcher": []
     },
     {
+      "label": "build-flappy-bird",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "gcc -g -Wall ${workspaceFolder}/flappy-bird/src/main.c ${workspaceFolder}/src/*.c -o ${workspaceFolder}/build/flappy-bird.exe"
+      ],
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "run-flappy-bird",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "cls && ${workspaceFolder}/build/flappy-bird.exe"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build and run flappy-bird",
+      "dependsOn": ["build-flappy-bird", "run-flappy-bird"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "build and run",
       "dependsOn": ["build", "run"],
       "dependsOrder": "sequence",
