@@ -18,7 +18,11 @@
     {
       "label": "run",
       "type": "shell",
-      "command": "${workspaceFolder}/build/ascii-engine.exe",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "cls && ${workspaceFolder}/build/ascii-engine.exe"
+      ],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -27,6 +31,18 @@
         "panel": "shared"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "build and run",
+      "dependsOn": ["build", "run"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
     }
   ]
 }

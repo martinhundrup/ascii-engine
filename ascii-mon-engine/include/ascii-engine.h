@@ -24,5 +24,6 @@ typedef struct vector2_f {
   float x, y;
 } Vector2_F;
 
+int compareVectors(Vector2_Int* a, Vector2_Int* b);
 
 #endif

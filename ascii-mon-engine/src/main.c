@@ -14,16 +14,18 @@
 #include "../include/draw.h"
 
 int main() {
-	
-	Game_Ticker* gt = new_game_ticker();
+
+	system("cls"); // hard clear the console screen
+
+	int tick_frequency = 20; // 20 ticks per second
+
+	Game_Ticker* gt = new_game_ticker(tick_frequency);
 	gt->init(gt);
 	
 	Input_Handler* ih = configureConsoleInput();
-	HANDLE* output = configureDrawSystem();
-	setCursorVisible(output, 0); // hide cursor
+	Screen* screen = screen_init((Vector2_Int){80, 25});
 
-	// Glyph background = {' ', COLOR_WHITE, COLOR_WHITE};
-	// Vector2_Int backgroundSize = {80, 25};
+	Glyph background = {' ', COLOR_WHITE, COLOR_WHITE};
 
 	Glyph player = {' ', COLOR_WHITE, COLOR_GREEN};
 	Vector2_Int v = {0};
@@ -32,34 +34,34 @@ int main() {
 
 		if (gt->act) {
 
-			//fillRect(output, &(Vector2_Int){0, 0}, &backgroundSize, &background);
-
 			ih->tick(ih);
+			screen_empty(screen); // refresh the screen buffer
+			screen_fill(screen, background); // fill the screen with background
 
 			if (isKeyPressed(ih, VK_ESCAPE)) {
+				screen_clear(screen);
 				printf("Escape key pressed, exiting...\n");
 				break;
 			}
 
 			if (isKeyDown(ih, 'D')){
-				eraseAtPosition(output, &v);
 				v.x++;
 			}
 			if (isKeyDown(ih, 'A')){
-				eraseAtPosition(output, &v);
 				v.x--;
 			}		
 			if (isKeyDown(ih, 'W')){
-				eraseAtPosition(output, &v);
 				v.y--;
 			}		
 			if (isKeyDown(ih, 'S')){
-				eraseAtPosition(output, &v);
 				v.y++;
-			}		
+			}
+			
+			
+			screen_putGlyph(screen, player, v);
+			
 
-
-			drawGlyph(output, &v, &player);
+			screen_draw(screen);
 		}
 		gt->tick(gt);
 	} while (1); // Loop for 1 second

@@ -8,7 +8,7 @@
 
 #include "../include/gametick.h"
 
-Game_Ticker* new_game_ticker() {
+Game_Ticker* new_game_ticker(int freq) {
   Game_Ticker* gt = (Game_Ticker*)malloc(sizeof(Game_Ticker));
   gt->init = init_game_ticker;
   gt->tick = tick_game_ticker;
@@ -16,6 +16,7 @@ Game_Ticker* new_game_ticker() {
   gt->get_delta = get_delta;
   gt->act = 0;
   gt->lastTick = 0;
+  gt->tick_frequency = freq;
   return gt;
 }
 
@@ -32,7 +33,7 @@ void tick_game_ticker(Game_Ticker* self) {
 
   self->act = 0;
   double elapsed = get_total_elapsed(self);
-  if (elapsed - self->lastTick >= 1.0 / TICK_FREQUENCY) {
+  if (elapsed - self->lastTick >= 1.0 / self->tick_frequency) {
     self->act = 1; // Set act to true if enough time has passed
     self->lastTick = elapsed;
   }

@@ -9,8 +9,6 @@
 #ifndef GAMETICK_H
 #define GAMETICK_H
 
-#define TICK_FREQUENCY 20 // Default tick frequency in Hz
-
 #include "ascii-engine.h"
 
 typedef struct game_ticker {
@@ -21,6 +19,7 @@ typedef struct game_ticker {
   double (*get_delta)(struct game_ticker* self); // Seconds since last frame
   short act; // should act or not
   double lastTick; // Time of the last tick
+  int tick_frequency; // Frequency of ticks in Hz
 } Game_Ticker;
 
 void init_game_ticker(Game_Ticker* self);
