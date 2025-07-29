@@ -15,8 +15,6 @@
 
 int main() {
 
-	system("cls"); // hard clear the console screen
-
 	int tick_frequency = 20; // 20 ticks per second
 
 	Game_Ticker* gt = new_game_ticker(tick_frequency);
@@ -31,19 +29,22 @@ int main() {
 	Vector2_Int v = {0};
 
 	do {
-
-		if (gt->act) {
-
-			ih->tick(ih);
+		if (gt->act) { // wait for the next tick
+			// handle start of tick
+			ih->tick(ih); // get input
 			screen_empty(screen); // refresh the screen buffer
-			screen_fill(screen, background); // fill the screen with background
 
+
+			// detect game quit
 			if (isKeyPressed(ih, VK_ESCAPE)) {
 				screen_clear(screen);
 				printf("Escape key pressed, exiting...\n");
 				break;
 			}
 
+			screen_fill(screen, background); // fill the screen with background
+
+			// player input
 			if (isKeyDown(ih, 'D')){
 				v.x++;
 			}
@@ -56,21 +57,15 @@ int main() {
 			if (isKeyDown(ih, 'S')){
 				v.y++;
 			}
-			
-			
 			screen_putGlyph(screen, player, v);
 			
-
+			// draw screen as last step in the frame
 			screen_draw(screen);
 		}
 		gt->tick(gt);
 	} while (1); // Loop for 1 second
 
 	printf("total elapsed time: %lf\n", gt->get_total_elapsed(gt));
-
-	// Vector2_Int size = {10, 5};
-	// g.symbol = ' ';
-	// fillRect(output, &v, &size, &g);
 
 	return 0;
 }
