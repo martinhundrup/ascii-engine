@@ -10,6 +10,7 @@
 
 #include "../include/flappy.h"
 #include "../include/pipe.h"
+#include "../include/bird.h"
 
 int main() {
 
@@ -29,6 +30,8 @@ int main() {
   Pipe_Pair* pipes = (Pipe_Pair*)malloc(sizeof(Pipe_Pair) * MAX_PIPES); // can store MAX_PIPES pipes
   byte pipeActive[MAX_PIPES] = {0}; // track active pipes
 
+  Bird* bird = bird_createBird(screen); // Create the bird
+
   int game_tick_counter = 0; // Counter to track game ticks
 
 	do {
@@ -45,7 +48,8 @@ int main() {
 			}
 
       screen_fill(screen, background); // fill the screen with background
-
+    
+      // *** HANDLE PIPES *** //
       for (int i = 0; i < MAX_PIPES; i++) {
         if (pipeActive[i]) {
           flappy_movePairLeft(&pipes[i], 1); // Move pipes left by 1 character
@@ -57,7 +61,6 @@ int main() {
           pipeActive[i] = 0; // Deactivate pipe when it goes off screen
         }
       }			
-
       // generate new pipe every 100 ticks
       if (game_tick_counter % 20 == 0) {
         for (int i = 0; i < MAX_PIPES; i++) {
@@ -65,10 +68,18 @@ int main() {
             pipes[i] = flappy_createRandomPipePair(screen);
             pipeActive[i] = 1;
             break;
-          }
+          } 
         }
-      }
-			
+      } 
+      // *** END HANDLE PIPES *** //
+
+      // ** HANDLE BIRD ** //
+
+      bird_tick(bird, screen, ih); // Move the bird based on input
+      bird_draw(screen, bird); // Draw the bird
+
+      // ** END HANDLE BIRD ** //
+			                                                               
 			// draw screen as last step in the frame
 			screen_draw(screen);
       game_tick_counter++;
