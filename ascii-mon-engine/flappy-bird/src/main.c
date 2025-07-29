@@ -6,25 +6,30 @@
 *	main.c contains the entry point for playing the game.
 */
 
+
+
 #include "../include/flappy.h"
+#include "../include/pipe.h"
 
 int main() {
 
-  printf("Welcome to Flappy Bird!\n");
-  return 0;
+  srand(time(NULL)); // Seed the random number generator
 
+  Vector2_Int screenSize = {80, 20};
 	int tick_frequency = 20; // 20 ticks per second
 
 	Game_Ticker* gt = new_game_ticker(tick_frequency);
 	gt->init(gt);
 	
 	Input_Handler* ih = configureConsoleInput();
-	Screen* screen = screen_init((Vector2_Int){80, 25});
+	Screen* screen = screen_init(screenSize);
 
-	Glyph background = {' ', COLOR_WHITE, COLOR_WHITE};
+	Glyph background = {'#', COLOR_WHITE, COLOR_BLACK};
 
-	Glyph player = {' ', COLOR_WHITE, COLOR_GREEN};
-	Vector2_Int v = {0};
+  Pipe_Pair* pipes = (Pipe_Pair*)malloc(sizeof(Pipe_Pair) * MAX_PIPES); // can store MAX_PIPES pipes
+  byte pipeActive[MAX_PIPES] = {0}; // track active pipes
+
+  int game_tick_counter = 0; // Counter to track game ticks
 
 	do {
 		if (gt->act) { // wait for the next tick
@@ -39,27 +44,37 @@ int main() {
 				break;
 			}
 
-			screen_fill(screen, background); // fill the screen with background
+      screen_fill(screen, background); // fill the screen with background
 
-			// player input
-			if (isKeyDown(ih, 'D')){
-				v.x++;
-			}
-			if (isKeyDown(ih, 'A')){
-				v.x--;
-			}		
-			if (isKeyDown(ih, 'W')){
-				v.y--;
-			}		
-			if (isKeyDown(ih, 'S')){
-				v.y++;
-			}
-			screen_putGlyph(screen, player, v);
+      for (int i = 0; i < MAX_PIPES; i++) {
+        if (pipeActive[i]) {
+          pipes[i].top.position.x -= 1; // Move pipe left
+          pipes[i].bottom.position.x -= 1; // Move pipe left
+          flappy_drawPipe(screen, &pipes[i].top);
+          flappy_drawPipe(screen, &pipes[i].bottom);
+        }
+
+        if (pipes[i].top.position.x < 0) {
+          pipeActive[i] = 0; // Deactivate pipe when it goes off screen
+        }
+      }			
+
+      // generate new pipe every 100 ticks
+      if (game_tick_counter % 20 == 0) {
+        for (int i = 0; i < MAX_PIPES; i++) {
+          if (!pipeActive[i]) {
+            pipes[i] = flappy_createRandomPipePair(screen);
+            pipeActive[i] = 1;
+            break;
+          }
+        }
+      }
 			
 			// draw screen as last step in the frame
 			screen_draw(screen);
+      game_tick_counter++;
 		}
-		gt->tick(gt);
+		gt->tick(gt);   
 	} while (1); // Loop for 1 second
 
 	printf("total elapsed time: %lf\n", gt->get_total_elapsed(gt));

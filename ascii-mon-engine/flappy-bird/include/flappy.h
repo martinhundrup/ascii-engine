@@ -14,4 +14,12 @@
 #include "../../include/gametick.h"
 #include "../../include/draw.h"
 
+typedef struct {
+  Vector2_Int position;
+  Vector2_Int size;
+} Transform;
+
+// Returns a random int within the specified range (inclusive).
+int flappy_getRandomRange(int min, int max);
+
 #endif // FLAPPY_H

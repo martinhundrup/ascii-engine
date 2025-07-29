@@ -38,7 +38,7 @@
       "command": "cmd",
       "args": [
         "/c",
-        "gcc -g -Wall ${workspaceFolder}/flappy-bird/src/main.c ${workspaceFolder}/src/*.c -o ${workspaceFolder}/build/flappy-bird.exe"
+        "gcc -g -Wall ${workspaceFolder}/flappy-bird/src/*.c ${workspaceFolder}/src/*.c -o ${workspaceFolder}/build/flappy-bird.exe"
       ],
       "group": "build",
       "problemMatcher": ["$gcc"]
