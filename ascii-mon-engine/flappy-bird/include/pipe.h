@@ -19,8 +19,7 @@
 #include "../include/flappy.h"
 
 typedef struct {
-    Vector2_Int position; // Position of the pipe
-    Vector2_Int size; // Size of the pipe
+    Transform transform; // Position and size of the pipe
     Glyph glyph; // Glyph representing the pipe
 } Pipe;
 
@@ -30,7 +29,7 @@ typedef struct {
 } Pipe_Pair;
 
 // Creates and initializes a new Pipe instance.
-Pipe flappy_createPipe(Vector2_Int position, Vector2_Int size, Glyph glyph);
+Pipe flappy_createPipe(Transform transform, Glyph glyph);
 
 // Draws a pipe to the screen.
 int flappy_drawPipe(Screen* screen, Pipe* pipe);
@@ -46,5 +45,8 @@ Pipe_Pair flappy_createRandomPipePair(Screen* screen);
 
 // Creates a pipe that is positioned opposite the provided pipe.
 Pipe flappy_createRepricolPipe(Screen* screen, Pipe* original);
+
+// Moves a pipe pair left by a specified distance.
+void flappy_movePairLeft(Pipe_Pair* pair, int distance);
 
 #endif // PIPE_H

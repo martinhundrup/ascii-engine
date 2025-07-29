@@ -48,13 +48,12 @@ int main() {
 
       for (int i = 0; i < MAX_PIPES; i++) {
         if (pipeActive[i]) {
-          pipes[i].top.position.x -= 1; // Move pipe left
-          pipes[i].bottom.position.x -= 1; // Move pipe left
+          flappy_movePairLeft(&pipes[i], 1); // Move pipes left by 1 character
           flappy_drawPipe(screen, &pipes[i].top);
           flappy_drawPipe(screen, &pipes[i].bottom);
         }
 
-        if (pipes[i].top.position.x < 0) {
+        if (pipes[i].top.transform.position.x < 0) {
           pipeActive[i] = 0; // Deactivate pipe when it goes off screen
         }
       }			
