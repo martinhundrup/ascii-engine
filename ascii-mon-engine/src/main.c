@@ -15,6 +15,8 @@
 
 int main() {
 
+	system("cls"); // hard clear the console screen
+
 	int tick_frequency = 20; // 20 ticks per second
 
 	Game_Ticker* gt = new_game_ticker(tick_frequency);
@@ -33,6 +35,7 @@ int main() {
 			// handle start of tick
 			ih->tick(ih); // get input
 			screen_empty(screen); // refresh the screen buffer
+			screen_fill(screen, background); // fill the screen with background
 
 			// detect game quit
 			if (isKeyPressed(ih, VK_ESCAPE)) {
