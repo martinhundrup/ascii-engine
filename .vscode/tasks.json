@@ -1,0 +1,89 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "gcc -g -Wall ${workspaceFolder}/ascii-engine/src/*.c -o ${workspaceFolder}/build/ascii-engine.exe"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "run",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "cls && ${workspaceFolder}/ascii-engine/build/ascii-engine.exe"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build-flappy-bird",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "gcc -g -Wall ${workspaceFolder}/flappy-bird/src/*.c ${workspaceFolder}/ascii-engine/src/*.c -o ${workspaceFolder}/flappy-bird/build/flappy-bird.exe"
+      ],
+      "group": "build",
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "run-flappy-bird",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "cls && ${workspaceFolder}/flappy-bird/build/flappy-bird.exe"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build and run flappy-bird",
+      "dependsOn": ["build-flappy-bird", "run-flappy-bird"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build and run ascii engine",
+      "dependsOn": ["build", "run"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    }
+  ]
+}
