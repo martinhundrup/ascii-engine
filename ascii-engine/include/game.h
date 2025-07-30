@@ -18,6 +18,7 @@ typedef struct game {
   Ticker* ticker; // The game ticker for managing game ticks
   Input_Handler* input_handler; // The input handler for user inputs
   Screen* screen; // The screen where the game is drawn
+  int frame_count; // Number of frames (aka playable ticks)
 
   void (*init)(struct game* self, Transform screenTransform, int tick_frequency); // Initialize the game
   void (*tick_start)(struct game* self); // called at start of each frame

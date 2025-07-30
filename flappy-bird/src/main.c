@@ -16,78 +16,86 @@ int main() {
 
   srand(time(NULL)); // Seed the random number generator
 
-  Vector2 screenSize = {80, 20};
+  Transform screenT = {{0,1},{80, 20}};
 	int tick_frequency = 20; // 20 ticks per second
 
-	Ticker* gt = ticker_create_ticker(tick_frequency);
-	gt->init(gt);
-	
-	Input_Handler* ih = input_new_input();
-	Screen* screen = screen_init(screenSize);
+  Game* game = game_new_game();
+  game->init(game, screenT, tick_frequency);
 
 	Glyph background = {'#', COLOR_WHITE, COLOR_BLACK};
 
   Pipe_Pair* pipes = (Pipe_Pair*)malloc(sizeof(Pipe_Pair) * MAX_PIPES); // can store MAX_PIPES pipes
   byte pipeActive[MAX_PIPES] = {0}; // track active pipes
-
-  Bird* bird = bird_createBird(screen); // Create the bird
-
-  int game_tick_counter = 0; // Counter to track game ticks
-
+  int gameOver = 0;
+  int score = 0;
+  Object* bird = bird_createBird(game->screen); // Create the bird
+  system("cls"); // hard clear the console screen
+  printf("testing\n");
 	do {
-		if (gt->act) { // wait for the next tick
+		if (game->ticker->act) { // wait for the next tick
 			// handle start of tick
-			ih->tick(ih); // get input
-			screen_empty(screen); // refresh the screen buffer
+			game->tick_start(game);
 
 			// detect game quit
-			if (input_is_key_pressed(ih, VK_ESCAPE)) {
-				screen_clear(screen);
-				printf("Escape key pressed, exiting...\n");
+			if (input_is_key_pressed(game->input_handler, VK_ESCAPE)) {
+				gameOver = 1;
 				break;
 			}
 
-      screen_fill(screen, background); // fill the screen with background
+      screen_fill(game->screen, background); // fill the screen with background
     
       // *** HANDLE PIPES *** //
       for (int i = 0; i < MAX_PIPES; i++) {
         if (pipeActive[i]) {
-          flappy_movePairLeft(&pipes[i], 1); // Move pipes left by 1 character
-          flappy_drawPipe(screen, &pipes[i].top);
-          flappy_drawPipe(screen, &pipes[i].bottom);
-        }
-
-        if (pipes[i].top.transform.position.x < 0) {
-          pipeActive[i] = 0; // Deactivate pipe when it goes off screen
+          pipe_pair_tick(&pipes[i], game); // Move the pipe pair left
+          pipe_draw_pair(&pipes[i], game); // Draw the pipe pair
+          // Check if pipe has gone off screen                 
+          if (pipes[i].top->transform.position.x < 0) {
+            pipeActive[i] = 0; // Deactivate pipe when it goes off screen
+            pipe_delete_pair(pipes[i]); // Free the pipe pair
+            score++; // Increment score for passing a pipe
+          }
         }
       }			
       // generate new pipe every 100 ticks
-      if (game_tick_counter % 20 == 0) {
+      if (game->frame_count % 20 == 0) {
         for (int i = 0; i < MAX_PIPES; i++) {
           if (!pipeActive[i]) {
-            pipes[i] = flappy_createRandomPipePair(screen);
+            pipes[i] = pipe_createRandomPipePair(game);
             pipeActive[i] = 1;
             break;
           } 
         }
-      } 
+      }      
       // *** END HANDLE PIPES *** //
 
-      // ** HANDLE BIRD ** //
-
-      bird_tick(bird, screen, ih); // Move the bird based on input
-      bird_draw(screen, bird); // Draw the bird
-
+      // ** HANDLE BIRD ** //            
+      bird->tick(bird, game); // Move the bird based on inputdr
+      bird->draw(bird, game); // Draw the bird
       // ** END HANDLE BIRD ** //
-			                                                               
-			// draw screen as last step in the frame
-			screen_draw(screen);
-      game_tick_counter++;
-		}
-		gt->tick(gt);   
-	} while (1); // Loop for 1 second
 
-	printf("total elapsed time: %lf\n", gt->ticker_get_total_elapsed(gt));
+      // ** CHECK COLLISION ** //
+      for (int i = 0; i < MAX_PIPES; i++) {
+        if (pipeActive[i]) {
+          if (checkBounds(bird->transform, pipes[i].top->transform) || 
+              checkBounds(bird->transform, pipes[i].bottom->transform)) {
+            gameOver = 1;
+          }
+        }
+      }
+      if (gameOver) {
+        break;
+      }
+      // ** END CHECK COLLISION ** //
+			                                                               
+			game->tick_end(game); // handle end of tick
+		}
+		game->ticker->tick(game->ticker);   
+	} while (!gameOver);
+
+  screen_clear(game->screen);
+	printf("total elapsed time: %lf\n", ticker_get_total_elapsed(game->ticker));
+  printf("You scored %d points!\n", score);
 
 	return 0;
 }

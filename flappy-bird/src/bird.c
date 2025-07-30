@@ -12,6 +12,7 @@ Object* bird_createBird(Screen* screen) {
   Transform t = (Transform){{BIRD_X_POS, screen->transform.size.y / 2},{BIRD_WIDTH, BIRD_HEIGHT}};
   Object* bird = object_create_game_object(t, BIRD_GLYPH);
   bird->velocity = (Vector2_F){0.0, -BIRD_JUMP_FORCE}; // Initial velocity is a jump
+  bird->tick = bird_tick; // Assign the tick function
   return bird;
 }
 
@@ -30,7 +31,7 @@ void bird_tick(Object* bird, Game* game) {
   bird->transform.position.y += bird->velocity.y;
 
   // simple ground collision
-  if (!checkBounds(bird->transform, game->screen->transform)) {
+  if (!checkBounds(bird->transform, (Transform){{0,0}, game->screen->transform.size})) {
     bird->velocity.y = 0; // Stop moving
   }
 }

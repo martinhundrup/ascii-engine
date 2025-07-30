@@ -35,4 +35,5 @@ void game_tick_start(Game* self) {
 void game_tick_end(Game* self) {
   // Draw the screen as the last step in the frame
   screen_draw(self->screen);
+  self->frame_count++;
 }
