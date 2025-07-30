@@ -17,7 +17,7 @@ Game* game_new_game() {
   return game;
 }
 
-void game_init(Game* self, Vector2_Int screenSize, int tick_frequency) {
+void game_init(Game* self, Vector2 screenSize, int tick_frequency) {
   self->ticker = ticker_create_ticker(tick_frequency);
   self->ticker->init(self->ticker);
   

@@ -10,8 +10,8 @@
 
 Bird* bird_createBird(Screen* screen) {
     Bird* bird = (Bird*)malloc(sizeof(Bird));
-    bird->transform.position = (Vector2_Int){BIRD_X_POS, screen->_size.y / 2};
-    bird->transform.size = (Vector2_Int){BIRD_WIDTH, BIRD_HEIGHT};
+    bird->transform.position = (Vector2){BIRD_X_POS, screen->_size.y / 2};
+    bird->transform.size = (Vector2){BIRD_WIDTH, BIRD_HEIGHT};
     bird->glyph = BIRD_GLYPH;
     bird->velocity = (Vector2_F){0.0, -BIRD_JUMP_FORCE}; // Initial velocity is a jump
     return bird;

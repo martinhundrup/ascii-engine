@@ -16,7 +16,7 @@ int main() {
 
   srand(time(NULL)); // Seed the random number generator
 
-  Vector2_Int screenSize = {80, 20};
+  Vector2 screenSize = {80, 20};
 	int tick_frequency = 20; // 20 ticks per second
 
 	Ticker* gt = ticker_create_ticker(tick_frequency);

@@ -41,17 +41,17 @@ typedef struct {
 // Screen represents a screen buffer
 // Fields with a leading underscore are private and should not be modified directly.
 typedef struct {
-	Vector2_Int _size; // cannot be modified after init
+	Vector2 _size; // cannot be modified after init
 	CHAR_INFO* _buffer; // 1D buffer for console data - x by y dynamically sized
 	HANDLE* _output; // handle to the console output
 } Screen;
 
 // Initializes a new screen with the specified size and returns a dynamic reference.
-Screen* screen_init(Vector2_Int size);
+Screen* screen_init(Vector2 size);
 
 // Puts a glyph at the specified position on the screen.
 // Returns 1 on success, 0 on failure/out of bounds.
-int screen_putGlyph(Screen* screen, Glyph glyph, Vector2_Int pos);
+int screen_putGlyph(Screen* screen, Glyph glyph, Vector2 pos);
 
 // Clears terminal output.
 void screen_clear(Screen* screen);
@@ -64,24 +64,9 @@ void screen_fill(Screen* screen, Glyph glyph);
 
 // Fills a rectangle on the screen with the specified glyph.
 // Returns 1 on success, 0 on failure/out of bounds.
-int screen_fillRect(Screen* screen, Vector2_Int origin, Vector2_Int size, Glyph glyph);
+int screen_fillRect(Screen* screen, Transform t, Glyph glyph);
 
 // Draws the current screen buffer to the console output.
 void screen_draw(Screen* screen);
-
-// Checks if the position is within the bounds of the screen.
-int checkBounds(Vector2_Int size, Vector2_Int pos);
-
-// HANDLE* configureDrawSystem();
-
-// int drawGlyph(HANDLE* handle, Vector2_Int* vect, Glyph* glyph);
-// int drawChar(HANDLE* handle, Vector2_Int* vect, char ch, int fgColor, int bgColor);
-// int clearScreen(HANDLE* handle);
-// int fillRect(HANDLE* handle, Vector2_Int* origin, Vector2_Int* size, Glyph* glyph);
-
-// int setCursorVisible(HANDLE* handle, int visible);
-// int moveCursor(HANDLE* handle, Vector2_Int* vect);
-
-// int eraseAtPosition(HANDLE* handle, Vector2_Int* vect);
 
 #endif // DRAW_H

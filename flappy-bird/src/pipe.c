@@ -24,14 +24,14 @@ int flappy_drawPipe(Screen* screen, Pipe* pipe) {
 // pipe heights are random between PIPE_HEIGHT_MIN and PIPE_HEIGHT_MAX characters
 
 Pipe flappy_createBottomPipe(Screen* screen){
-  Vector2_Int size = {PIPE_WIDTH, flappy_getRandomRange(PIPE_HEIGHT_MIN, PIPE_HEIGHT_MAX)};
-  Vector2_Int position = {screen->_size.x - size.x, screen->_size.y - size.y};
+  Vector2 size = {PIPE_WIDTH, flappy_getRandomRange(PIPE_HEIGHT_MIN, PIPE_HEIGHT_MAX)};
+  Vector2 position = {screen->_size.x - size.x, screen->_size.y - size.y};
   return flappy_createPipe((Transform){position, size}, PIPE_GLYPH);
 }
 
 Pipe flappy_createTopPipe(Screen* screen){
-  Vector2_Int size = {PIPE_WIDTH, flappy_getRandomRange(PIPE_HEIGHT_MIN, PIPE_HEIGHT_MAX)};
-  Vector2_Int position = {screen->_size.x - size.x, 0};
+  Vector2 size = {PIPE_WIDTH, flappy_getRandomRange(PIPE_HEIGHT_MIN, PIPE_HEIGHT_MAX)};
+  Vector2 position = {screen->_size.x - size.x, 0};
   return flappy_createPipe((Transform){position, size}, PIPE_GLYPH);
 }
 
@@ -43,8 +43,8 @@ Pipe_Pair flappy_createRandomPipePair(Screen* screen) {
 }
 
 Pipe flappy_createRepricolPipe(Screen* screen, Pipe* original) {
-  Vector2_Int position = {original->transform.position.x, 0}; // Start at the same x position
-  Vector2_Int size = original->transform.size;
+  Vector2 position = {original->transform.position.x, 0}; // Start at the same x position
+  Vector2 size = original->transform.size;
   size.y = screen->_size.y - (original->transform.size.y + PIPE_DISTANCE); // Adjust height  
 
   if (original->transform.position.y == 0){ // original was a top, so create a bottom   

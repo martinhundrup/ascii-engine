@@ -8,7 +8,7 @@
 *	for use of the engine.
 */
 
-#include "../include/game.h"
+#include "../include/object.h"
 
 int main() {
 
@@ -17,18 +17,25 @@ int main() {
 	int tick_frequency = 20; // 20 ticks per second
 
 	Game* game = game_new_game();
-	game->init(game, (Vector2_Int){80, 20}, tick_frequency);
+	game->init(game, (Vector2){80, 20}, tick_frequency);
 
 	Glyph background = {' ', COLOR_WHITE, COLOR_WHITE};
 
-	Glyph player = {' ', COLOR_WHITE, COLOR_GREEN};
-	Vector2_Int v = {0};
+	Object* playerObject = object_create_game_object(
+		(Transform){{1, 1}, {1, 1}}, // {position, size}
+		(Glyph){' ', COLOR_WHITE, COLOR_GREEN}
+	);
+	playerObject->init(playerObject, game); // Initialize the player object
+
+	Object* enemyObject = object_create_game_object(
+		(Transform){{10, 10}, {2, 2}}, // {position, size}
+		(Glyph){'E', COLOR_WHITE, COLOR_RED}
+	);
+	enemyObject->init(enemyObject, game); // Initialize the enemy object
 
 	do {
 		if (game->ticker->act) { // wait for the next tick
 			game->tick_start(game);
-
-			screen_fill(game->screen, background); // fill the screen with background
 
 			// detect game quit
 			if (input_is_key_pressed(game->input_handler, VK_ESCAPE)) {
@@ -37,24 +44,35 @@ int main() {
 				break;
 			}
 
+			// detect game loss
+			if (checkBounds(playerObject->transform, enemyObject->transform)) {
+				screen_clear(game->screen);
+				printf("YOU LOSE!\n");
+				break;
+			}
+
 			screen_fill(game->screen, background); // fill the screen with background
+			//screen_fillRect(game->screen, (Transform){{0, 0}, {2,2}}, background); // fill the screen with background
 
 			// player input
 			if (input_is_key_down(game->input_handler, 'D')){
-				v.x++;
+				playerObject->transform.position.x++;
 			}
 			if (input_is_key_down(game->input_handler, 'A')){
-				v.x--;
+				playerObject->transform.position.x--;
 			}		
 			if (input_is_key_down(game->input_handler, 'W')){
-				v.y--;
+				playerObject->transform.position.y--;
 			}		
 			if (input_is_key_down(game->input_handler, 'S')){
-				v.y++;
+				playerObject->transform.position.y++;
 			}
-			screen_putGlyph(game->screen, player, v);
+			playerObject->draw(playerObject, game); // draw the player object
+
+			enemyObject->draw(enemyObject, game); // draw the enemy object
 			
-			game->tick_end(game); // end of tick
+
+			game->tick_end(game); // end of tick, draws the screen
 		}
 
 		game->ticker->tick(game->ticker);

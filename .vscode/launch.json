@@ -5,7 +5,7 @@
       "name": "Debug ASCII Engine",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/ascii-engine.exe",
+      "program": "${workspaceFolder}/ascii-engine/build/ascii-engine.exe",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
