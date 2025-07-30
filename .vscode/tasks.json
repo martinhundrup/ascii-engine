@@ -7,7 +7,7 @@
       "command": "cmd",
       "args": [
         "/c",
-        "gcc -g -Wall ${workspaceFolder}/ascii-engine/src/*.c -o ${workspaceFolder}/build/ascii-engine.exe"
+        "gcc -g -Wall ${workspaceFolder}/ascii-engine/src/*.c -o ${workspaceFolder}/ascii-engine/build/ascii-engine.exe"
       ],
       "group": {
         "kind": "build",

@@ -13,11 +13,9 @@
 #include "../../ascii-engine/include/input.h"
 #include "../../ascii-engine/include/gametick.h"
 #include "../../ascii-engine/include/draw.h"
+#include "../../ascii-engine/include/gameobject.h"
 
-typedef struct {
-  Vector2_Int position;
-  Vector2_Int size;
-} Transform;
+
 
 // Returns a random int within the specified range (inclusive).
 int flappy_getRandomRange(int min, int max);

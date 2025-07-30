@@ -30,7 +30,7 @@ void bird_tick(Bird* bird, Screen* screen, Input_Handler* ih) {
   bird->velocity.y += BIRD_GRAVITY; // Apply gravity to the bird's velocity
 
   // then handle jump
-  if (isKeyPressed(ih, VK_SPACE)) {
+  if (input_is_key_pressed(ih, VK_SPACE)) {
     bird->velocity.y = -BIRD_JUMP_FORCE; // Apply jump force
   }
 

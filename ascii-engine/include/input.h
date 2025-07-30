@@ -22,12 +22,13 @@ typedef struct input_handler {
     void (*tick)(struct input_handler* self);
 } Input_Handler;
 
-Input_Handler* configureConsoleInput();
+// creates and initializes a new input handler instance.
+Input_Handler* input_new_input();
 
-void updateInputStates(Input_Handler* handler);
-int isKeyPressed(Input_Handler* handler, WORD keyCode);
-int isKeyReleased(Input_Handler* handler, WORD keyCode);
-int isKeyDown(Input_Handler* handler, WORD keyCode);
+void input_tick(Input_Handler* handler);
+int input_is_key_pressed(Input_Handler* handler, WORD keyCode);
+int input_is_key_released(Input_Handler* handler, WORD keyCode);
+int input_is_key_down(Input_Handler* handler, WORD keyCode);
 
 WORD getInputKeyCode(Input_Handler* handler);
 

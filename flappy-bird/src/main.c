@@ -19,10 +19,10 @@ int main() {
   Vector2_Int screenSize = {80, 20};
 	int tick_frequency = 20; // 20 ticks per second
 
-	Game_Ticker* gt = new_game_ticker(tick_frequency);
+	Ticker* gt = ticker_create_ticker(tick_frequency);
 	gt->init(gt);
 	
-	Input_Handler* ih = configureConsoleInput();
+	Input_Handler* ih = input_new_input();
 	Screen* screen = screen_init(screenSize);
 
 	Glyph background = {'#', COLOR_WHITE, COLOR_BLACK};
@@ -41,7 +41,7 @@ int main() {
 			screen_empty(screen); // refresh the screen buffer
 
 			// detect game quit
-			if (isKeyPressed(ih, VK_ESCAPE)) {
+			if (input_is_key_pressed(ih, VK_ESCAPE)) {
 				screen_clear(screen);
 				printf("Escape key pressed, exiting...\n");
 				break;
@@ -87,7 +87,7 @@ int main() {
 		gt->tick(gt);   
 	} while (1); // Loop for 1 second
 
-	printf("total elapsed time: %lf\n", gt->get_total_elapsed(gt));
+	printf("total elapsed time: %lf\n", gt->ticker_get_total_elapsed(gt));
 
 	return 0;
 }

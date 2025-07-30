@@ -10,7 +10,7 @@
 
 
 // Function to initialize input handling
-Input_Handler* configureConsoleInput() {
+Input_Handler* input_new_input() {
     Input_Handler* handler = (Input_Handler*)malloc(sizeof(Input_Handler));
     if (!handler) return NULL;
 
@@ -33,28 +33,28 @@ Input_Handler* configureConsoleInput() {
         handler->currentKeyStates[i] = 0;
     }
 
-    handler->tick = updateInputStates;
+    handler->tick = input_tick;
     return handler;
 }
 
-void updateInputStates(Input_Handler* handler) {
+void input_tick(Input_Handler* handler) {
     for (int i = 0; i < MAX_KEYS; i++) {
         handler->previousKeyStates[i] = handler->currentKeyStates[i];
         handler->currentKeyStates[i] = (GetAsyncKeyState(i) & 0x8000) != 0;
     }
 }
 
-int isKeyPressed(Input_Handler* handler, WORD keyCode) {
+int input_is_key_pressed(Input_Handler* handler, WORD keyCode) {
     if (keyCode >= MAX_KEYS) return 0;
     return handler->currentKeyStates[keyCode] && !handler->previousKeyStates[keyCode];
 }
 
-int isKeyReleased(Input_Handler* handler, WORD keyCode) {
+int input_is_key_released(Input_Handler* handler, WORD keyCode) {
     if (keyCode >= MAX_KEYS) return 0;
     return !handler->currentKeyStates[keyCode] && handler->previousKeyStates[keyCode];
 }
 
-int isKeyDown(Input_Handler* handler, WORD keyCode) {
+int input_is_key_down(Input_Handler* handler, WORD keyCode) {
     if (keyCode >= MAX_KEYS) return 0;
     return handler->currentKeyStates[keyCode];
 }
