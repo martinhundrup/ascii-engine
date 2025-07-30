@@ -31,7 +31,7 @@ void bird_tick(Object* bird, Game* game) {
   bird->transform.position.y += bird->velocity.y;
 
   // simple ground collision
-  if (!checkBounds(bird->transform, (Transform){{0,0}, game->screen->transform.size})) {
+  if (!inside(bird->transform, (Transform){{0,0}, game->screen->transform.size})) {
     bird->velocity.y = 0; // Stop moving
   }
 }

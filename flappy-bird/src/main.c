@@ -39,7 +39,6 @@ int main() {
 			// detect game quit
 			if (input_is_key_pressed(game->input_handler, VK_ESCAPE)) {
 				gameOver = 1;
-				break;
 			}
 
       screen_fill(game->screen, background); // fill the screen with background
@@ -77,14 +76,11 @@ int main() {
       // ** CHECK COLLISION ** //
       for (int i = 0; i < MAX_PIPES; i++) {
         if (pipeActive[i]) {
-          if (checkBounds(bird->transform, pipes[i].top->transform) || 
-              checkBounds(bird->transform, pipes[i].bottom->transform)) {
+          if (overlaps(bird->transform, pipes[i].top->transform) || 
+              overlaps(bird->transform, pipes[i].bottom->transform)) {
             gameOver = 1;
           }
         }
-      }
-      if (gameOver) {
-        break;
       }
       // ** END CHECK COLLISION ** //
 			                                                               
@@ -93,7 +89,7 @@ int main() {
 		game->ticker->tick(game->ticker);   
 	} while (!gameOver);
 
-  screen_clear(game->screen);
+  //screen_clear(game->screen);
 	printf("total elapsed time: %lf\n", ticker_get_total_elapsed(game->ticker));
   printf("You scored %d points!\n", score);
 

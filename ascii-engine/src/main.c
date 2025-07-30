@@ -46,7 +46,7 @@
 // 			}
 
 // 			// detect game loss
-// 			if (checkBounds(playerObject->transform, enemyObject->transform)) {
+// 			if (inside(playerObject->transform, enemyObject->transform)) {
 // 				screen_clear(game->screen);
 // 				printf("YOU LOSE!\n");
 // 				break;

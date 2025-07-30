@@ -43,7 +43,11 @@ int compareVectors(Vector2* a, Vector2* b);
 
 // Checks if the inner transform is completely within the outer transform.
 // Returns 1 if inner is inside outer (edges can touch), 0 otherwise.
-int checkBounds(Transform inner, Transform outer);
+int inside(Transform inner, Transform outer);
+
+// Checks if two transforms overlap (have any intersecting area).
+// Returns 1 if they overlap, 0 otherwise.
+int overlaps(Transform a, Transform b);
 
 // Returns a random int within the specified range (inclusive).
 int getRandomRange(int min, int max);

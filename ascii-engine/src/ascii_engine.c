@@ -12,12 +12,21 @@ int compareVectors(Vector2* a, Vector2* b) {
   return (a->x == b->x && a->y == b->y);
 }
 
-int checkBounds(Transform inner, Transform outer){
+int inside(Transform inner, Transform outer){
 	return (
 		inner.position.x >= outer.position.x && 
 		inner.position.x + inner.size.x <= outer.position.x + outer.size.x && 
 		inner.position.y >= outer.position.y && 
 		inner.position.y + inner.size.y <= outer.position.y + outer.size.y
+	);
+}
+
+int overlaps(Transform a, Transform b){
+	return (
+		a.position.x < b.position.x + b.size.x &&
+		a.position.x + a.size.x > b.position.x &&
+		a.position.y < b.position.y + b.size.y &&
+		a.position.y + a.size.y > b.position.y
 	);
 }
 

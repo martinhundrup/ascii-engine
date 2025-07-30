@@ -19,7 +19,7 @@ Screen* screen_init(Transform transform){
 
 int screen_putGlyph(Screen* screen, Glyph glyph, Vector2 pos){
 	// Treat pos as screen-relative coordinates (within the screen buffer)
-	if (!checkBounds((Transform){pos, {1, 1}}, (Transform){{0, 0}, screen->transform.size})) return 0;
+	if (!inside((Transform){pos, {1, 1}}, (Transform){{0, 0}, screen->transform.size})) return 0;
 	int index = pos.y * screen->transform.size.x + pos.x;
 	screen->_buffer[index].Char.AsciiChar = glyph.symbol;
 	screen->_buffer[index].Attributes = (WORD)((glyph.backgroundColor << 4) | glyph.foregroundColor);
@@ -64,7 +64,7 @@ int screen_fillRect(Screen* screen, Transform t, Glyph glyph){
 	if (!screen || !screen->_buffer) return 0;
 	if (t.size.x <= 0 || t.size.y <= 0) return 0;
 	// Treat t as screen-relative coordinates (within the screen buffer)
-	if (!checkBounds(t, (Transform){{0, 0}, screen->transform.size})) return 0;
+	if (!inside(t, (Transform){{0, 0}, screen->transform.size})) return 0;
 
 	for (int y = 0; y < t.size.y; y++) {
 		for (int x = 0; x < t.size.x; x++) {
