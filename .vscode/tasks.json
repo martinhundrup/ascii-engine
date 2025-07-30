@@ -7,7 +7,7 @@
       "command": "cmd",
       "args": [
         "/c",
-        "gcc -g -Wall ${workspaceFolder}/src/*.c -o ${workspaceFolder}/build/ascii-engine.exe"
+        "gcc -g -Wall ${workspaceFolder}/ascii-engine/src/*.c -o ${workspaceFolder}/build/ascii-engine.exe"
       ],
       "group": {
         "kind": "build",
@@ -21,7 +21,7 @@
       "command": "cmd",
       "args": [
         "/c",
-        "cls && ${workspaceFolder}/build/ascii-engine.exe"
+        "cls && ${workspaceFolder}/ascii-engine/build/ascii-engine.exe"
       ],
       "group": "test",
       "presentation": {
@@ -38,7 +38,7 @@
       "command": "cmd",
       "args": [
         "/c",
-        "gcc -g -Wall ${workspaceFolder}/flappy-bird/src/*.c ${workspaceFolder}/src/*.c -o ${workspaceFolder}/build/flappy-bird.exe"
+        "gcc -g -Wall ${workspaceFolder}/flappy-bird/src/*.c ${workspaceFolder}/ascii-engine/src/*.c -o ${workspaceFolder}/flappy-bird/build/flappy-bird.exe"
       ],
       "group": "build",
       "problemMatcher": ["$gcc"]
@@ -49,7 +49,7 @@
       "command": "cmd",
       "args": [
         "/c",
-        "cls && ${workspaceFolder}/build/flappy-bird.exe"
+        "cls && ${workspaceFolder}/flappy-bird/build/flappy-bird.exe"
       ],
       "group": "test",
       "presentation": {
@@ -74,7 +74,7 @@
       "problemMatcher": []
     },
     {
-      "label": "build and run",
+      "label": "build and run ascii engine",
       "dependsOn": ["build", "run"],
       "dependsOrder": "sequence",
       "group": "build",
