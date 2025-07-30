@@ -3,7 +3,7 @@
 */
 
 /*
-*	draw.h contains basic functionality for interacting
+*	screen.h contains basic functionality for interacting
 *	with the terminal window, including drawing, erasing,
 *	color, etc.
 */
@@ -41,13 +41,13 @@ typedef struct {
 // Screen represents a screen buffer
 // Fields with a leading underscore are private and should not be modified directly.
 typedef struct {
-	Vector2 _size; // cannot be modified after init
+	Transform transform; // cannot be modified after init
 	CHAR_INFO* _buffer; // 1D buffer for console data - x by y dynamically sized
 	HANDLE* _output; // handle to the console output
 } Screen;
 
 // Initializes a new screen with the specified size and returns a dynamic reference.
-Screen* screen_init(Vector2 size);
+Screen* screen_init(Transform transform);
 
 // Puts a glyph at the specified position on the screen.
 // Returns 1 on success, 0 on failure/out of bounds.

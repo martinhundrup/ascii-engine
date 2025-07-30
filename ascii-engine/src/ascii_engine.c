@@ -20,3 +20,12 @@ int checkBounds(Transform inner, Transform outer){
 		inner.position.y + inner.size.y <= outer.position.y + outer.size.y
 	);
 }
+
+int getRandomRange(int min, int max) {
+  if (min > max) {
+    int temp = min;
+    min = max;
+    max = temp;
+  }
+  return (rand() % (max - min + 1)) + min;
+}

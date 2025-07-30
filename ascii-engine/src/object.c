@@ -12,6 +12,7 @@ Object* object_create_game_object(Transform transform, Glyph glyph) {
     Object* obj = malloc(sizeof(Object));
     if (!obj) return NULL;
 
+    obj->velocity = (Vector2_F){0.0f, 0.0f}; // Initialize velocity
     obj->transform = transform;
     obj->glyph = glyph;
 

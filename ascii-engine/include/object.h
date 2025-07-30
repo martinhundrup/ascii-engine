@@ -14,6 +14,7 @@
 
 typedef struct object {
     Transform transform;
+    Vector2_F velocity; // velocity for physics calculations
     Glyph glyph; // the visual representation of the game object
 
     void (*init)(struct object* self, Game* game); // Initialize the game object

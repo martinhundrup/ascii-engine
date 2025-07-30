@@ -45,4 +45,7 @@ int compareVectors(Vector2* a, Vector2* b);
 // Returns 1 if inner is inside outer (edges can touch), 0 otherwise.
 int checkBounds(Transform inner, Transform outer);
 
+// Returns a random int within the specified range (inclusive).
+int getRandomRange(int min, int max);
+
 #endif

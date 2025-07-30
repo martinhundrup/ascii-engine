@@ -3,23 +3,24 @@
 */
 
 /*
-*	draw.c contains the function impelementations for drawing.
+*	screen.c contains the function impelementations for drawing.
 */
 
-#include "../include/draw.h"
+#include "../include/screen.h"
 
-Screen* screen_init(Vector2 size){
+Screen* screen_init(Transform transform){
 	Screen* screen = (Screen*)malloc(sizeof(Screen));
-	screen->_size = size;
-	screen->_buffer = (CHAR_INFO*)malloc(size.x * size.y * sizeof(CHAR_INFO));
+	screen->transform = transform;
+	screen->_buffer = (CHAR_INFO*)malloc(transform.size.x * transform.size.y * sizeof(CHAR_INFO));
 	screen->_output = (HANDLE*)malloc(sizeof(HANDLE));
 	*screen->_output = GetStdHandle(STD_OUTPUT_HANDLE);
 	return screen;
 }
 
 int screen_putGlyph(Screen* screen, Glyph glyph, Vector2 pos){
-	if (!checkBounds((Transform){pos, {1, 1}}, (Transform){{0, 0}, screen->_size})) return 0;
-	int index = pos.y * screen->_size.x + pos.x;
+	// Treat pos as screen-relative coordinates (within the screen buffer)
+	if (!checkBounds((Transform){pos, {1, 1}}, (Transform){{0, 0}, screen->transform.size})) return 0;
+	int index = pos.y * screen->transform.size.x + pos.x;
 	screen->_buffer[index].Char.AsciiChar = glyph.symbol;
 	screen->_buffer[index].Attributes = (WORD)((glyph.backgroundColor << 4) | glyph.foregroundColor);
 	return 1;
@@ -27,7 +28,7 @@ int screen_putGlyph(Screen* screen, Glyph glyph, Vector2 pos){
 
 void screen_empty(Screen* screen){
 	if (!screen || !screen->_buffer) return;
-	memset(screen->_buffer, 0, screen->_size.x * screen->_size.y * sizeof(CHAR_INFO));
+	memset(screen->_buffer, 0, screen->transform.size.x * screen->transform.size.y * sizeof(CHAR_INFO));
 }
 
 void screen_clear(Screen* screen){
@@ -54,7 +55,7 @@ void screen_fill(Screen* screen, Glyph glyph){
 	charInfo.Char.AsciiChar = glyph.symbol;
 	charInfo.Attributes = (WORD)((glyph.backgroundColor << 4) | glyph.foregroundColor);
 	
-	for (int i = 0; i < screen->_size.x * screen->_size.y; i++) {
+	for (int i = 0; i < screen->transform.size.x * screen->transform.size.y; i++) {
 		screen->_buffer[i] = charInfo;
 	}
 }
@@ -62,7 +63,8 @@ void screen_fill(Screen* screen, Glyph glyph){
 int screen_fillRect(Screen* screen, Transform t, Glyph glyph){
 	if (!screen || !screen->_buffer) return 0;
 	if (t.size.x <= 0 || t.size.y <= 0) return 0;
-	if (!checkBounds(t, (Transform){{0, 0}, screen->_size})) return 0;
+	// Treat t as screen-relative coordinates (within the screen buffer)
+	if (!checkBounds(t, (Transform){{0, 0}, screen->transform.size})) return 0;
 
 	for (int y = 0; y < t.size.y; y++) {
 		for (int x = 0; x < t.size.x; x++) {
@@ -76,10 +78,15 @@ int screen_fillRect(Screen* screen, Transform t, Glyph glyph){
 void screen_draw(Screen* screen){
 	if (!screen || !screen->_output || !screen->_buffer) return;
 	
-	// Write the buffer directly to console - no conversion needed!
-	COORD bufferSize = {(SHORT)screen->_size.x, (SHORT)screen->_size.y};
+	// Write the buffer to console at the screen's position offset
+	COORD bufferSize = {(SHORT)screen->transform.size.x, (SHORT)screen->transform.size.y};
 	COORD bufferCoord = {0, 0};
-	SMALL_RECT writeRegion = {0, 0, (SHORT)(screen->_size.x - 1), (SHORT)(screen->_size.y - 1)};
+	SMALL_RECT writeRegion = {
+		(SHORT)screen->transform.position.x, 
+		(SHORT)screen->transform.position.y, 
+		(SHORT)(screen->transform.position.x + screen->transform.size.x - 1), 
+		(SHORT)(screen->transform.position.y + screen->transform.size.y - 1)
+	};
 	
 	WriteConsoleOutput(*screen->_output, screen->_buffer, bufferSize, bufferCoord, &writeRegion);
 }

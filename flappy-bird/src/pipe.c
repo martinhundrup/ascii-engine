@@ -24,13 +24,13 @@ int flappy_drawPipe(Screen* screen, Pipe* pipe) {
 // pipe heights are random between PIPE_HEIGHT_MIN and PIPE_HEIGHT_MAX characters
 
 Pipe flappy_createBottomPipe(Screen* screen){
-  Vector2 size = {PIPE_WIDTH, flappy_getRandomRange(PIPE_HEIGHT_MIN, PIPE_HEIGHT_MAX)};
+  Vector2 size = {PIPE_WIDTH, getRandomRange(PIPE_HEIGHT_MIN, PIPE_HEIGHT_MAX)};
   Vector2 position = {screen->_size.x - size.x, screen->_size.y - size.y};
   return flappy_createPipe((Transform){position, size}, PIPE_GLYPH);
 }
 
 Pipe flappy_createTopPipe(Screen* screen){
-  Vector2 size = {PIPE_WIDTH, flappy_getRandomRange(PIPE_HEIGHT_MIN, PIPE_HEIGHT_MAX)};
+  Vector2 size = {PIPE_WIDTH, getRandomRange(PIPE_HEIGHT_MIN, PIPE_HEIGHT_MAX)};
   Vector2 position = {screen->_size.x - size.x, 0};
   return flappy_createPipe((Transform){position, size}, PIPE_GLYPH);
 }

@@ -17,12 +17,12 @@ Game* game_new_game() {
   return game;
 }
 
-void game_init(Game* self, Vector2 screenSize, int tick_frequency) {
+void game_init(Game* self, Transform screenTransform, int tick_frequency) {
   self->ticker = ticker_create_ticker(tick_frequency);
   self->ticker->init(self->ticker);
   
   self->input_handler = input_new_input();
-  self->screen = screen_init(screenSize);
+  self->screen = screen_init(screenTransform);
 
   self->input_handler = input_new_input();
 }

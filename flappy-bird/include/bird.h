@@ -20,19 +20,10 @@
 
 #include "../include/flappy.h"
 
-typedef struct {
-    Transform transform; // Position and size of the bird
-    Vector2_F velocity; // Velocity of the bird
-    Glyph glyph; // Glyph representing the bird
-} Bird;
-
 // Creates and initializes a new dynamic Bird instance.
-Bird* bird_createBird(Screen* screen);
-
-// Draws the bird to the screen.
-int bird_draw(Screen* screen, Bird* bird);
+Object* bird_createBird(Screen* screen);
 
 // Moves the bird based on input.
-void bird_tick(Bird* bird, Screen* screen, Input_Handler* ih);
+void bird_tick(Object* bird, Game* game);
 
 #endif // BIRD_H
