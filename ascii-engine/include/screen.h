@@ -34,13 +34,13 @@
 // Glyph represents a drawable character with color
 typedef struct {
 	char symbol;
-	int foregroundColor;
+	int textColor;
 	int backgroundColor;
 } Glyph;
 
 typedef struct {
 	char str[256]; // Fixed-size buffer for the string
-	int foregroundColor;
+	int textColor;
 	int backgroundColor;
 } Glyph_Str;
 

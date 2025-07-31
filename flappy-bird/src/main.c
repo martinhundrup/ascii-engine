@@ -16,7 +16,7 @@ int main() {
 
   srand(time(NULL)); // Seed the random number generator
 
-  Transform screenT = {{0,1},{80, 20}};
+  Transform screenT = {{0,2},{80, 20}};
 	int tick_frequency = 20; // 20 ticks per second
 
   Game* game = game_new_game();
@@ -29,12 +29,45 @@ int main() {
   int gameOver = 0;
   int score = 0;
   Object* bird = bird_createBird(game->screen); // Create the bird
+  
+  // header stuff
+  Screen *header = screen_init((Transform){{0, 1}, {80, 1}}); // Header screen
+  Glyph_Str testStr = {
+    "Flappy Bird Clone",
+    COLOR_BRIGHT_YELLOW,
+    COLOR_BLACK
+  };
+
   system("cls"); // hard clear the console screen
-  printf("testing\n");
+
 	do {
 		if (game->ticker->act) { // wait for the next tick
 			// handle start of tick
 			game->tick_start(game);
+
+      // handle the header                           
+      screen_empty(header);
+      sprintf(testStr.str, "Score: %d", score);
+      screen_putGlyphStr(header, testStr, (Vector2){0, 0});
+      screen_draw(header); // Draw the header
+      
+      // Print header text
+      screen_putGlyphStr(header, testStr, (Vector2){0, 0});
+
+      // Print frame count
+      sprintf(testStr.str, "Frame: %d", game->frame_count);
+      screen_putGlyphStr(header, testStr, (Vector2){0, 1});
+
+      // Print tick count
+      sprintf(testStr.str, "Tick: %d", game->ticker->tick_count);
+      screen_putGlyphStr(header, testStr, (Vector2){0, 2});
+
+      // Print score
+      sprintf(testStr.str, "Score: %d", score);
+      screen_putGlyphStr(header, testStr, (Vector2){0, 3});
+
+      // Draw the header
+      screen_draw(header);
 
 			// detect game quit
 			if (input_is_key_pressed(game->input_handler, VK_ESCAPE)) {
@@ -89,9 +122,14 @@ int main() {
 		game->ticker->tick(game->ticker);   
 	} while (!gameOver);
 
-  //screen_clear(game->screen);
-	printf("total elapsed time: %lf\n", ticker_get_total_elapsed(game->ticker));
-  printf("You scored %d points!\n", score);
+  Glyph_Str gameOverStr = {
+    "GAME OVER!",
+    COLOR_RED,
+    COLOR_BLACK
+  };
+
+  screen_putGlyphStr(game->screen, gameOverStr, (Vector2){35, 9});
+  screen_draw(game->screen);
 
 	return 0;
 }

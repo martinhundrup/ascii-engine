@@ -22,7 +22,7 @@ int screen_putGlyph(Screen* screen, Glyph glyph, Vector2 pos){
 	if (!inside((Transform){pos, {1, 1}}, (Transform){{0, 0}, screen->transform.size})) return 0;
 	int index = pos.y * screen->transform.size.x + pos.x;
 	screen->_buffer[index].Char.AsciiChar = glyph.symbol;
-	screen->_buffer[index].Attributes = (WORD)((glyph.backgroundColor << 4) | glyph.foregroundColor);
+	screen->_buffer[index].Attributes = (WORD)((glyph.backgroundColor << 4) | glyph.textColor);
 	return 1;
 }
 
@@ -53,7 +53,7 @@ void screen_fill(Screen* screen, Glyph glyph){
 	if (!screen || !screen->_buffer) return;
 	CHAR_INFO charInfo;
 	charInfo.Char.AsciiChar = glyph.symbol;
-	charInfo.Attributes = (WORD)((glyph.backgroundColor << 4) | glyph.foregroundColor);
+	charInfo.Attributes = (WORD)((glyph.backgroundColor << 4) | glyph.textColor);
 	
 	for (int i = 0; i < screen->transform.size.x * screen->transform.size.y; i++) {
 		screen->_buffer[i] = charInfo;
@@ -96,7 +96,7 @@ void screen_putGlyphStr(Screen* screen, Glyph_Str glyphStr, Vector2 pos) {
 		Vector2 newPos = {pos.x + i, pos.y};
 		Glyph glyph = {
 			.symbol = glyphStr.str[i],
-			.foregroundColor = glyphStr.foregroundColor,
+			.textColor = glyphStr.textColor,
 			.backgroundColor = glyphStr.backgroundColor
 		};
 		screen_putGlyph(screen, glyph, newPos);
