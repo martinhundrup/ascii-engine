@@ -26,10 +26,10 @@
 #define COLOR_BRIGHT_BLUE   9
 #define COLOR_BRIGHT_GREEN 10
 #define COLOR_BRIGHT_CYAN  11
-#define COLOR_BRIGHT_RED   12
-#define COLOR_BRIGHT_MAGENTA 13
-#define COLOR_BRIGHT_YELLOW 14
-#define COLOR_BRIGHT_WHITE 15
+#define COLOR_BRIGHT_RED   		12
+#define COLOR_BRIGHT_MAGENTA 	13
+#define COLOR_BRIGHT_YELLOW  	14
+#define COLOR_BRIGHT_WHITE 		15
 
 // Glyph represents a drawable character with color
 typedef struct {
@@ -37,6 +37,12 @@ typedef struct {
 	int foregroundColor;
 	int backgroundColor;
 } Glyph;
+
+typedef struct {
+	char str[256]; // Fixed-size buffer for the string
+	int foregroundColor;
+	int backgroundColor;
+} Glyph_Str;
 
 // Screen represents a screen buffer
 // Fields with a leading underscore are private and should not be modified directly.
@@ -68,5 +74,8 @@ int screen_fillRect(Screen* screen, Transform t, Glyph glyph);
 
 // Draws the current screen buffer to the console output.
 void screen_draw(Screen* screen);
+
+// Prints a string at the specified position on the screen.
+void screen_putGlyphStr(Screen* screen, Glyph_Str glyphStr, Vector2 pos);
 
 #endif // DRAW_H

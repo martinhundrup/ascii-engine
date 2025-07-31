@@ -31,13 +31,12 @@ void ticker_init(Ticker* self) {
 void ticker_tick(Ticker* self) {
   self->last = self->now;
   QueryPerformanceCounter(&self->now);
-
+  self->tick_count++;
   self->act = 0;
   double elapsed = ticker_get_total_elapsed(self);
   if (elapsed - self->lastTick >= 1.0 / self->tick_frequency) {
     self->act = 1; // Set act to true if enough time has passed
-    self->lastTick = elapsed;
-    self->tick_count++;
+    self->lastTick = elapsed;    
   }
 }
 

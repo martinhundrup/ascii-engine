@@ -90,3 +90,15 @@ void screen_draw(Screen* screen){
 	
 	WriteConsoleOutput(*screen->_output, screen->_buffer, bufferSize, bufferCoord, &writeRegion);
 }
+
+void screen_putGlyphStr(Screen* screen, Glyph_Str glyphStr, Vector2 pos) {
+	for (int i = 0; i < strlen(glyphStr.str); i++) {
+		Vector2 newPos = {pos.x + i, pos.y};
+		Glyph glyph = {
+			.symbol = glyphStr.str[i],
+			.foregroundColor = glyphStr.foregroundColor,
+			.backgroundColor = glyphStr.backgroundColor
+		};
+		screen_putGlyph(screen, glyph, newPos);
+	}
+}

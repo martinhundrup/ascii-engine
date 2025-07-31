@@ -25,6 +25,7 @@ void game_init(Game* self, Transform screenTransform, int tick_frequency) {
   self->screen = screen_init(screenTransform);
 
   self->input_handler = input_new_input();
+  self->frame_count = 0;
 }
 
 void game_tick_start(Game* self) {
