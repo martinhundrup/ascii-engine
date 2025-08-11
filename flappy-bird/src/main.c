@@ -6,8 +6,6 @@
 *	main.c contains the entry point for playing the game.
 */
 
-
-
 #include "../include/flappy.h"
 #include "../include/pipe.h"
 #include "../include/bird.h"
@@ -81,7 +79,7 @@ int main() {
         if (pipeActive[i]) {
           pipe_pair_tick(&pipes[i], game); // Move the pipe pair left
           pipe_draw_pair(&pipes[i], game); // Draw the pipe pair
-          // Check if pipe has gone off screen                 
+          // Check if pipe has gone off screen                                                                   
           if (pipes[i].top->transform.position.x < 0) {
             pipeActive[i] = 0; // Deactivate pipe when it goes off screen
             pipe_delete_pair(pipes[i]); // Free the pipe pair

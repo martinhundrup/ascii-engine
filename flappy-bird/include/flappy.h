@@ -9,6 +9,22 @@
 #ifndef FLAPPY_H
 #define FLAPPY_H
 
+#define TITLE_FLAPPY { \
+  "#####  #       ###   ####   ####   #   #", \ 
+  "#      #      #   #  #   #  #   #   # # ", \
+  "###    #      #####  ####   ####     #  ", \
+  "#      #      #   #  #      #        #  ", \
+  "#      #####  #   #  #      #        #  ", \
+};
+
+#define TITLE_BIRD { \
+  "####   #####  ####   #### ", \ 
+  "#   #    #    #   #  #   #", \
+  "####     #    ####   #   #", \
+  "#   #    #    #   #  #   #", \
+  "####   #####  #   #  #### ", \
+};
+
 #include "../../ascii-engine/include/object.h"
 
 #endif // FLAPPY_H
