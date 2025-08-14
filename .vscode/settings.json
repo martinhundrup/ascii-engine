@@ -3,6 +3,8 @@
     "gametick.h": "c",
     "input.h": "c",
     "draw.h": "c",
-    "object.h": "c"
+    "object.h": "c",
+    "game.h": "c",
+    "ascii-engine.h": "c"
   }
 }
