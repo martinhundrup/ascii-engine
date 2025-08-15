@@ -22,4 +22,7 @@ Object* ball_create(Screen* screen);
 // updates the state of a ball obj.
 void ball_tick(Object* obj, Game* game);
 
+// collision handler.
+void ball_collision(Object* obj, Game* game, Object* left_paddle, Object* right_paddle);
+
 #endif // BALL_H

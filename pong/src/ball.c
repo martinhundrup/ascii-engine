@@ -8,8 +8,6 @@
 
 #include "../include/ball.h"
 
-
-// creates a new dynamic ball obj.
 Object* ball_create(Screen* screen){
   Object* b = object_create_game_object(
     (Transform){{screen->transform.size.x / 2, screen->transform.size.y / 2},
@@ -25,7 +23,6 @@ Object* ball_create(Screen* screen){
   return b;
 }
 
-// updates the state of a ball obj.
 void ball_tick(Object* obj, Game* game) {
   Vector2 pos = obj->transform.position;
 
@@ -44,8 +41,24 @@ void ball_tick(Object* obj, Game* game) {
       obj->velocity.y *= -1;
     }
 
+    // normalize is bugged
+    //obj->velocity = normalize(obj->velocity, BALL_SPEED);
+
     // update ball position again
     obj->transform.position.y += obj->velocity.y;
     obj->transform.position.x += obj->velocity.x;
+  }
+}
+
+void ball_collision(Object* obj, Game* game, Object* left_paddle, Object* right_paddle){
+  // if it is inside one of the paddles, reverse x direction 
+  // and add the y velocity of the paddle
+  if (inside(obj->transform, left_paddle->transform)){
+    obj->velocity.x *= -1;
+    obj->velocity.y += left_paddle->velocity.y * 0.5;
+  }
+  else   if (inside(obj->transform, right_paddle->transform)){
+    obj->velocity.x *= -1;
+    obj->velocity.y += right_paddle->velocity.y * 0.5;
   }
 }

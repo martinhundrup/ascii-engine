@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <string.h>
+#include <math.h>
 
 // x and y integer coordinate pair
 typedef struct vector2 {
@@ -51,5 +52,8 @@ int overlaps(Transform a, Transform b);
 
 // Returns a random int within the specified range (inclusive).
 int getRandomRange(int min, int max);
+
+// Normalizes a vector2f to the desired magnitude.
+Vector2_F normalize(Vector2_F v, int magnitude);
 
 #endif

@@ -73,6 +73,7 @@ Transform screenT = {{0,2},{80, 20}};
       // ** END HANDLE PADDLES ** //
 			                                      
       // ** HANDLE BALL ** //
+      ball_collision(ball, game, p1, p2);
       ball->tick(ball, game);
       ball->draw(ball, game);
       // ** END HANDLE BALL ** //

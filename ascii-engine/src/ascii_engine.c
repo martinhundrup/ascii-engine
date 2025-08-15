@@ -38,3 +38,12 @@ int getRandomRange(int min, int max) {
   }
   return (rand() % (max - min + 1)) + min;
 }
+
+Vector2_F normalize(Vector2_F v, int magnitude) {
+  float length = sqrt(v.x * v.x + v.y * v.y);
+    if (length == 0.0f) {
+        return (Vector2_F){0.0f, 0.0f}; // avoid division by zero
+    }
+    float scale = magnitude / length;
+    return (Vector2_F){v.x * scale, v.y * scale};
+}

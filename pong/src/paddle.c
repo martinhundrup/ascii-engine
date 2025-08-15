@@ -17,10 +17,13 @@ Object* paddle_create_p1_paddle(Screen* screen) {
 
 void paddle_p1_tick(Object* obj, Game* game) {
   Vector2 original_pos = obj->transform.position;
+  obj->velocity.y = 0; // reset velocity
   if (input_is_key_down(game->input_handler, 'W')){
+    obj->velocity.y = -1;
     obj->transform.position.y--;
   }
   else if (input_is_key_down(game->input_handler, 'S')){
+    obj->velocity.y = 1;
     obj->transform.position.y++;
   }
   // make sure it is still in bounds
@@ -38,10 +41,13 @@ Object* paddle_create_p2_paddle(Screen* screen) {
 
 void paddle_p2_tick(Object* obj, Game* game){
   Vector2 original_pos = obj->transform.position;
+  obj->velocity.y = 0; // reset velocity
   if (input_is_key_down(game->input_handler, VK_UP)){
+    obj->velocity.y = -1;
     obj->transform.position.y--;
   }
   else if (input_is_key_down(game->input_handler, VK_DOWN)){
+    obj->velocity.y = 1;
     obj->transform.position.y++;
   }
   // make sure it is still in bounds
